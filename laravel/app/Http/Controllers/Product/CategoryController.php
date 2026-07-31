@@ -2,17 +2,31 @@
 
 namespace App\Http\Controllers\Product;
 
+use App\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\CategoryResource;
+use App\Services\CategoryService;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
+    public function __construct(
+        private CategoryService $categoryService
+    ) {}
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        $categories = CategoryResource::collection(
+            $this->categoryService->getAll()
+        );
+
+        return ApiResponse::success(
+            $categories,
+            'Categories retrieved successfully.'
+        );
     }
 
     /**
