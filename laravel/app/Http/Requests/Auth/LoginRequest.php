@@ -6,25 +6,48 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class LoginRequest extends FormRequest
 {
+    /**
+     * Semua user boleh mengakses endpoint login.
+     */
     public function authorize(): bool
     {
         return true;
     }
 
+    /**
+     * Validasi request login.
+     */
     public function rules(): array
     {
         return [
-            'email' => ['required','email'],
-            'password' => ['required','string']
+            'email' => [
+                'required',
+                'email',
+            ],
+
+            'password' => [
+                'required',
+                'string',
+                'min:6',
+            ],
         ];
     }
 
+    /**
+     * Custom pesan error.
+     */
     public function messages(): array
     {
         return [
+
             'email.required' => 'Email wajib diisi.',
+
             'email.email' => 'Format email tidak valid.',
+
             'password.required' => 'Password wajib diisi.',
+
+            'password.min' => 'Password minimal 6 karakter.',
+
         ];
     }
 }

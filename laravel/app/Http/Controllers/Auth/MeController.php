@@ -3,15 +3,19 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\Auth\UserResource;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class MeController extends Controller
 {
-    public function __invoke(Request $request)
+    public function __invoke(Request $request): JsonResponse
     {
         return response()->json([
             'success' => true,
-            'message' => 'Profile endpoint is ready.',
+            'data' => new UserResource(
+                $request->user()
+            ),
         ]);
     }
 }

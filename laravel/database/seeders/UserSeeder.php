@@ -11,15 +11,13 @@ class UserSeeder extends Seeder
     public function run(): void
     {
         $owner = User::firstOrCreate(
-            [
-                'email' => 'owner@nusapos.test',
-            ],
+            ['email' => 'owner@nusapos.test'],
             [
                 'name' => 'Owner NusaPOS',
                 'password' => Hash::make('password'),
             ]
         );
 
-        $owner->assignRole('Owner');
+        $owner->assignRole('owner');
     }
 }
