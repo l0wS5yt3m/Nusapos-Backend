@@ -3,13 +3,14 @@
 namespace App\Modules\Product\Controllers;
 
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-
 use App\Modules\Product\Services\CategoryService;
+
 use App\Modules\Product\Requests\CategoryRequest;
+
 use App\Modules\Product\DTO\CategoryDTO;
+
 use App\Modules\Product\Resources\CategoryResource;
 
 
@@ -20,7 +21,10 @@ class CategoryController extends Controller
 
     public function __construct(
         protected CategoryService $service
-    ){}
+    )
+    {
+
+    }
 
 
 
@@ -35,14 +39,15 @@ class CategoryController extends Controller
 
 
 
-
     public function store(CategoryRequest $request)
     {
 
-        $category=$this->service->create(
+        $category = $this->service->create(
+
             CategoryDTO::fromArray(
                 $request->validated()
             )
+
         );
 
 
@@ -52,15 +57,13 @@ class CategoryController extends Controller
 
 
 
-
-
     public function update(
         CategoryRequest $request,
         int $id
     )
     {
 
-        $category=$this->service->update(
+        $category = $this->service->update(
 
             $id,
 
@@ -77,8 +80,6 @@ class CategoryController extends Controller
 
 
 
-
-
     public function destroy(int $id)
     {
 
@@ -87,7 +88,7 @@ class CategoryController extends Controller
 
         return response()->json([
 
-            'message'=>'Category deleted'
+            'message'=>'Category deleted successfully'
 
         ]);
 

@@ -1,44 +1,49 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
 use App\Modules\Product\Controllers\CategoryController;
 
 
-
 Route::middleware('auth:sanctum')
-->group(function(){
+    ->group(function () {
 
 
-    Route::get(
-        '/categories',
-        [CategoryController::class,'index']
-    )
-    ->middleware('permission:category.view');
+        /*
+        |--------------------------------------------------------------------------
+        | Category Permission
+        |--------------------------------------------------------------------------
+        */
 
 
-
-    Route::post(
-        '/categories',
-        [CategoryController::class,'store']
-    )
-    ->middleware('permission:category.create');
-
-
-
-    Route::put(
-        '/categories/{id}',
-        [CategoryController::class,'update']
-    )
-    ->middleware('permission:category.update');
+        Route::get(
+            '/categories',
+            [CategoryController::class, 'index']
+        )
+        ->middleware('permission:category.view');
 
 
 
-    Route::delete(
-        '/categories/{id}',
-        [CategoryController::class,'destroy']
-    )
-    ->middleware('permission:category.delete');
+        Route::post(
+            '/categories',
+            [CategoryController::class, 'store']
+        )
+        ->middleware('permission:category.create');
 
 
-});
+
+        Route::put(
+            '/categories/{id}',
+            [CategoryController::class, 'update']
+        )
+        ->middleware('permission:category.update');
+
+
+
+        Route::delete(
+            '/categories/{id}',
+            [CategoryController::class, 'destroy']
+        )
+        ->middleware('permission:category.delete');
+
+
+    });
