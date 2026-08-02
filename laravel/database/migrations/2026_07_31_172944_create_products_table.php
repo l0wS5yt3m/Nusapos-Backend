@@ -12,8 +12,49 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('products', function (Blueprint $table) {
+
             $table->id();
+
+            $table->foreignId('category_id')
+                ->constrained('categories')
+                ->cascadeOnUpdate()
+                ->restrictOnDelete();
+
+            $table->string('sku', 30)->unique();
+
+            $table->string('barcode', 50)
+                ->nullable()
+                ->unique();
+
+            $table->string('name', 150);
+
+            $table->string('slug', 170)->unique();
+
+            $table->text('description')->nullable();
+
+            $table->decimal('cost_price', 15, 2)->default(0);
+
+            $table->decimal('selling_price', 15, 2);
+
+            $table->integer('stock')->default(0);
+
+            $table->integer('minimum_stock')->default(0);
+
+            $table->string('image')->nullable();
+
+            $table->boolean('status')->default(true);
+
             $table->timestamps();
+
+            /*
+            |--------------------------------------------------------------------------
+            | Index
+            |--------------------------------------------------------------------------
+            */
+
+            $table->index('name');
+            $table->index('status');
+            $table->index('category_id');
         });
     }
 
