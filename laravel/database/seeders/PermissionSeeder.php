@@ -36,6 +36,12 @@ class PermissionSeeder extends Seeder
             'transaction.delete',
             'transaction.status',
 
+            // Supplier
+            'supplier.view',
+            'supplier.create',
+            'supplier.update',
+            'supplier.delete',
+
         ];
 
 

@@ -7,4 +7,5 @@ Route::prefix('v1')->group(function () {
     require __DIR__.'/api/category.php';
     require __DIR__.'/api/product.php';
     require __DIR__.'/api/customer.php';
+      require __DIR__.'/api/supplier.php';
 });

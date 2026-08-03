@@ -52,6 +52,8 @@ class RolePermissionSeeder extends Seeder
             'transaction.update',
             'transaction.delete',
 
+            'supplier.view',
+
         ]);
 
 
