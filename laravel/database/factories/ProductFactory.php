@@ -2,23 +2,42 @@
 
 namespace Database\Factories;
 
-use App\Models\Product;
+use App\Models\Category;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
-/**
- * @extends Factory<Product>
- */
 class ProductFactory extends Factory
 {
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
     public function definition(): array
     {
-        return [
-            //
+   //     $name = fake()->unique()->words(2, true);
+
+   return [
+
+  //          'category_id' => Category::factory(),
+
+//            'sku' => strtoupper(fake()->unique()->bothify('PRD#####')),
+
+  //          'barcode' => null,
+
+    //        'name' => ucwords($name),
+
+      //      'slug' => Str::slug($name),
+
+        //    'description' => fake()->sentence(),
+
+          //  'cost_price' => fake()->numberBetween(5000, 50000),
+
+           // 'selling_price' => fake()->numberBetween(60000, 100000),
+
+//            'stock' => fake()->numberBetween(10, 200),
+
+  //          'minimum_stock' => fake()->numberBetween(1, 10),
+
+    //        'image' => null,
+
+      //      'status' => true,
+ 
         ];
-    }
+  }
 }
