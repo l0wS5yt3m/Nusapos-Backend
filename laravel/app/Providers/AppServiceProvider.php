@@ -9,6 +9,11 @@ use App\Modules\Product\Repositories\ProductRepository;
 use App\Modules\Product\Repositories\ProductRepositoryInterface;
 use App\Modules\Supplier\Repositories\SupplierRepository;
 use App\Modules\Supplier\Repositories\SupplierRepositoryInterface;
+use App\Modules\Purchase\Repositories\PurchaseRepository;
+use App\Modules\Purchase\Repositories\PurchaseRepositoryInterface;
+use App\Modules\Transaction\Repositories\TransactionRepository;
+use App\Modules\Transaction\Repositories\TransactionRepositoryInterface;
+
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -19,7 +24,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(
     CategoryRepositoryInterface::class,
     CategoryRepository::class
-);
+    );
 
     $this->app->bind(
         ProductRepositoryInterface::class,
@@ -30,7 +35,19 @@ class AppServiceProvider extends ServiceProvider
         SupplierRepositoryInterface::class,
         SupplierRepository::class
     );
+
+    $this->app->bind(
+    PurchaseRepositoryInterface::class,
+    PurchaseRepository::class
+    );
+
+    $this->app->bind(
+    TransactionRepositoryInterface::class,
+    TransactionRepository::class
+    );
+
     }
+
 
     /**
      * Bootstrap any application services.
