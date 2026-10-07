@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Exceptions\TransactionException;
 use Illuminate\Support\Collection;
 
 class TransactionCalculator
@@ -24,13 +25,24 @@ class TransactionCalculator
             $subtotal +=
                 $product->selling_price
                 * $item->qty;
+        }
 
+        if ($discount > $subtotal) {
+            throw new TransactionException(
+                'Discount tidak boleh lebih besar dari subtotal.'
+            );
         }
 
         $grandTotal =
             $subtotal
             - $discount
             + $tax;
+
+        if ($grandTotal < 0) {
+            throw new TransactionException(
+                'Grand total transaksi tidak boleh negatif.'
+            );
+        }
 
         return [
 

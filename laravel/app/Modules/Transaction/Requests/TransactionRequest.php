@@ -3,6 +3,7 @@
 namespace App\Modules\Transaction\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class TransactionRequest extends FormRequest
 {
@@ -16,14 +17,18 @@ class TransactionRequest extends FormRequest
         return [
 
             'customer_id' => [
-                'required',
+                'nullable',
                 'exists:customers,id',
             ],
 
             'payment_method' => [
                 'required',
                 'string',
-                'max:50',
+                Rule::in([
+                    'cash',
+                    'transfer',
+                    'qris',
+                ]),
             ],
 
             'discount' => [
@@ -53,6 +58,7 @@ class TransactionRequest extends FormRequest
             'items.*.product_id' => [
                 'required',
                 'exists:products,id',
+                'distinct',
             ],
 
             'items.*.qty' => [
