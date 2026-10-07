@@ -13,6 +13,8 @@ use App\Modules\Purchase\Repositories\PurchaseRepository;
 use App\Modules\Purchase\Repositories\PurchaseRepositoryInterface;
 use App\Modules\Transaction\Repositories\TransactionRepository;
 use App\Modules\Transaction\Repositories\TransactionRepositoryInterface;
+use App\Modules\Customer\Repositories\CustomerRepository;
+use App\Modules\Customer\Repositories\CustomerRepositoryInterface;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -44,6 +46,11 @@ class AppServiceProvider extends ServiceProvider
     $this->app->bind(
     TransactionRepositoryInterface::class,
     TransactionRepository::class
+    );
+
+    $this->app->bind(
+        CustomerRepositoryInterface::class,
+        CustomerRepository::class
     );
 
     }
