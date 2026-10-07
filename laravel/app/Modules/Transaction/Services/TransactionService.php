@@ -121,12 +121,12 @@ private function loadProducts(
 {
     $ids = collect($dto->items)
         ->pluck('product_id')
-        ->unique();
+        ->unique()
+        ->sort()
+        ->values();
 
-    return \App\Models\Product::whereIn(
-            'id',
-            $ids
-        )
+    return \App\Models\Product::whereIn('id', $ids)
+        ->lockForUpdate()
         ->get()
         ->keyBy('id');
 }
