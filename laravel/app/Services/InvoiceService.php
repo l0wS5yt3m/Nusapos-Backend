@@ -2,43 +2,52 @@
 
 namespace App\Services;
 
-use App\Models\Purchase;
-use App\Models\Transaction;
+use App\Models\InvoiceSequence;
+use Carbon\Carbon;
 
 class InvoiceService
 {
     public function generate(string $type = 'transaction'): string
     {
-        $today = now()->format('Ymd');
+        $date = Carbon::today();
 
-        if ($type === 'purchase') {
-            $model = Purchase::class;
-            $prefix = 'PUR';
-        } else {
-            $model = Transaction::class;
-            $prefix = 'INV';
-        }
+        $prefix = match ($type) {
+            'purchase' => 'PUR',
+            'transaction' => 'INV',
+            default => throw new \InvalidArgumentException(
+                "Tipe invoice '{$type}' tidak valid."
+            ),
+        };
 
-        $last = $model::whereDate(
-            'created_at',
-            today()
-        )
-            ->latest('id')
+        $sequence = InvoiceSequence::where('type', $type)
+            ->whereDate('sequence_date', $date)
+            ->lockForUpdate()
             ->first();
 
-        $number = 1;
+        if (! $sequence) {
+          InvoiceSequence::createOrFirst(
+        [
+            'type' => $type,
+            'sequence_date' => $date,
+        ],
+        [
+            'last_number' => 0,
+        ]
+        );
 
-        if ($last) {
-            $parts = explode('-', $last->invoice_number);
-
-            $number = ((int) end($parts)) + 1;
+        $sequence = InvoiceSequence::where('type', $type)
+        ->whereDate('sequence_date', $date)
+        ->lockForUpdate()
+        ->firstOrFail();
         }
+
+        $sequence->increment('last_number');
 
         return sprintf(
             '%s-%s-%06d',
             $prefix,
-            $today,
-            $number
+            $date->format('Ymd'),
+            $sequence->last_number
         );
     }
 }
