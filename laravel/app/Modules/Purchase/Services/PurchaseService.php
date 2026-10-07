@@ -2,6 +2,7 @@
 
 namespace App\Modules\Purchase\Services;
 
+use App\Exceptions\PurchaseException;
 use App\Models\Product;
 use App\Models\Purchase;
 use App\Modules\Purchase\DTO\PurchaseDTO;
@@ -51,11 +52,17 @@ class PurchaseService
             $discount = $dto->discount;
             $tax = $dto->tax;
 
+            if ($discount > $subtotal) {
+                throw new PurchaseException(
+                    'Discount tidak boleh lebih besar dari subtotal.'
+                );
+            }
+
             $grandTotal = $subtotal - $discount + $tax;
 
             if ($grandTotal < 0) {
-                throw new \Exception(
-                    'Grand total tidak boleh kurang dari 0.'
+                throw new PurchaseException(
+                    'Grand total pembelian tidak boleh negatif.'
                 );
             }
 
@@ -117,9 +124,12 @@ class PurchaseService
     ): Collection {
         $ids = collect($dto->items)
             ->pluck('product_id')
-            ->unique();
+            ->unique()
+            ->sort()
+            ->values();
 
         return Product::whereIn('id', $ids)
+            ->lockForUpdate()
             ->get()
             ->keyBy('id');
     }
@@ -131,19 +141,19 @@ class PurchaseService
         foreach ($dto->items as $item) {
 
             if (! $products->has($item->product_id)) {
-                throw new \Exception(
+                throw new PurchaseException(
                     "Produk {$item->product_id} tidak ditemukan."
                 );
             }
 
             if ($item->qty <= 0) {
-                throw new \Exception(
+                throw new PurchaseException(
                     "Jumlah produk {$item->product_id} tidak valid."
                 );
             }
 
             if ($item->price < 0) {
-                throw new \Exception(
+                throw new PurchaseException(
                     "Harga produk {$item->product_id} tidak valid."
                 );
             }

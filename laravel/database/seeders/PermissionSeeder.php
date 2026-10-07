@@ -42,6 +42,10 @@ class PermissionSeeder extends Seeder
             'supplier.update',
             'supplier.delete',
 
+            // Purchase
+            'purchase.view',
+            'purchase.create',
+
         ];
 
 

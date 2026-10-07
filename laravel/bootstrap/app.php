@@ -2,6 +2,7 @@
 
 use App\Exceptions\InsufficientStockException;
 use App\Exceptions\TransactionException;
+use App\Exceptions\PurchaseException;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -73,6 +74,23 @@ return Application::configure(basePath: dirname(__DIR__))
 
         $exceptions->render(function (
             TransactionException $e,
+            Request $request
+        ) {
+            if ($request->is('api/*')) {
+                return response()->json([
+                    'message' => $e->getMessage(),
+                ], 422);
+            }
+        });
+
+        /*
+        |--------------------------------------------------------------------------
+        | Purchase Business Rule
+        |--------------------------------------------------------------------------
+        */
+
+        $exceptions->render(function (
+            PurchaseException $e,
             Request $request
         ) {
             if ($request->is('api/*')) {

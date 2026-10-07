@@ -54,6 +54,7 @@ class PurchaseRequest extends FormRequest
                 'required',
                 'integer',
                 'exists:products,id',
+                'distinct',
             ],
 
             'items.*.qty' => [
